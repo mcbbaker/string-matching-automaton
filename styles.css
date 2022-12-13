@@ -1,0 +1,51 @@
+body {
+	background-color: #B8C8DA;
+	margin: 0;
+	font-family: "Times New Roman", serif;
+}
+
+#title {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 12vh;
+	font-size: 3vh;
+}
+
+#sequenceForm {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#formPanel {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	height: 8vh;
+	width: 23.5vw;
+	font-size: 2.5vh;
+}
+
+#formPanel input {
+	height: 2.5vh;
+	width: 13vw;
+}
+
+#formPanel button {
+	width: 4.5vw;
+	height: 3.5vh;
+	font-size: 2.25vh;
+	text-align: center;
+}
+
+#automatonPanel {
+	height: 80vh;
+	width: 100vw;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: relative;
+}
+
