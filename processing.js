@@ -5,7 +5,12 @@ let context = canvas.getContext("2d");
 canvas.width  = parent.offsetWidth;
 canvas.height = parent.offsetHeight;
 
-// draws the automaton
+/**
+* Draws the string matching automaton for a given sequence 
+* @param seq: the pattern/sequence of interest 
+* @param height: the height of the canvas 
+* @param width: the width of the canvas
+*/
 function drawAutomaton(seq,height,width) {
 	const alphabet = [];
 	// get alphabet characters from sequence
@@ -23,8 +28,8 @@ function drawAutomaton(seq,height,width) {
 	// get x and y position to start drawing
 	const y = height/2;
 	let x = ((width-totalSpace)/2)+radius;
-	// initial height to draw backwards transitions
-	let lineHeight = 80;
+	// initial height (y-axis radius of the ellipse) to draw backwards transitions 
+	let yRadius = 40;
 	
 	// for each state
 	for (let i=0; i<k; i++) {			
@@ -47,43 +52,55 @@ function drawAutomaton(seq,height,width) {
 			else {
 				let curString = seq.slice(0,i) + alphabet[j];
 				let backwardsState = getOverlaps(seq, curString);
-				
-				// add backwards transition above the states
+				// even numbered state, add backwards transition above the states
 				if (i % 2 == 0) {
+					// loop using a Bezier curve
 					if (i-backwardsState == 0) {
 						context.beginPath();
 						context.moveTo(x, y-radius);
-						context.bezierCurveTo(x-30,y-lineHeight,x+30,y-lineHeight,x-(radius*3*(i-backwardsState)), y-radius);
+						context.bezierCurveTo(x-30,y-radius*2,x+30,y-radius*2,x, y-radius);
 						context.stroke();
+						// character on backwards transition
+						context.font = "2vh Times New Roman";
+						context.fillText(alphabet[j],x,y-(radius*2)+16);
 					}
+					// backwards transition to another state using a half-ellipse
 					else {
 						context.beginPath();
-						context.moveTo(x, y-radius);
-						context.bezierCurveTo(x,y-lineHeight,x-(radius*3*(i-backwardsState)),y-lineHeight,x-(radius*3*(i-backwardsState)), y-radius);
+						context.ellipse(getMiddleXCoord(x,i,backwardsState,radius),y-radius, getTotalDistance(i,backwardsState,radius)/2,yRadius,0,0,Math.PI,true);
 						context.stroke();
+						// character on backwards transition
+						context.font = "2vh Times New Roman";
+						context.fillText(alphabet[j],getMiddleXCoord(x,i,backwardsState,radius),y-radius-yRadius-3);
 					}
 				}
 				
-				// add backwards transition below the states
+				// odd numbered state, add backwards transition below the states
 				else {
+					// loop using a Bezier curve
 					if (i-backwardsState == 0) {
 						context.beginPath();
 						context.moveTo(x, y+radius);
-						context.bezierCurveTo(x-30,y+lineHeight,x+30,y+lineHeight,x-(radius*3*(i-backwardsState)), y+radius);
+						context.bezierCurveTo(x-30,y+radius*2,x+30,y+radius*2,x, y+radius);
 						context.stroke();
+						// character on backwards transition
+						context.font = "2vh Times New Roman";
+						context.fillText(alphabet[j],x,y+(radius*2)-10);
 					}
+					// backwards transition to another state using a half-ellipse
 					else {
 						context.beginPath();
-						context.moveTo(x, y+radius);
-						context.bezierCurveTo(x,y+lineHeight,x-(radius*3*(i-backwardsState)),y+lineHeight,x-(radius*3*(i-backwardsState)), y+radius);
+						context.ellipse(getMiddleXCoord(x,i,backwardsState,radius),y+radius, getTotalDistance(i,backwardsState,radius)/2,yRadius,0,0,Math.PI,false);
 						context.stroke();
+						// character on backwards transition
+						context.font = "2vh Times New Roman";
+						context.fillText(alphabet[j],getMiddleXCoord(x,i,backwardsState,radius),y+radius+yRadius+10);
 					}
 				}
-				// increase the line height to prevent all transitions overlapping
-				lineHeight += 15;
+				// increase the y-axis radius to prevent all transitions overlapping
+				yRadius += 10;
 			}
-		}
-		
+		}	
 		
 		// add forward transitions, only if not the final state
 		if (i != k-1) {
@@ -108,8 +125,35 @@ function drawAutomaton(seq,height,width) {
 	context.closePath();
 }
 
-// calculates the maximal overlap (backwards transition) between a suffix of the current string
-// with a prefix of the sequence
+/**
+* Given two states, find the X coordinate that is halfway between the centers of the two states
+* @param x: the x-coordinate corresponding to the center of the "greater" state, i
+* @param i: the first state, should be greater or equal to the second state
+* @param backwardsState: the second state, should be less or equal to the first state (hence, backwards state)
+* @ param radius: the radius for the current automaton
+*/
+function getMiddleXCoord(x, i, backwardsState, radius) {
+	// entire distance between the radius' of the two states 
+	let totalDistance = 3*(i-backwardsState)*radius;
+	return x-(totalDistance/2);
+}
+
+/** 
+* Given two states, find the total distance between the centers of the two states
+* @param i: the first state, should be greater or equal to the second state
+* @param backwardsState: the second state, should be less or equal to the first state (hence, backwards state)
+* @param radius: the radius for the current automaton
+*/
+function getTotalDistance(i, backwardsState, radius) {
+	return 3*(i-backwardsState)*radius;
+}
+
+/**
+* Given 2 strings, find the maximal overlap between a prefix of the first string with a suffix of the 
+* second string 
+* @param seq: the first string, overlap contains a prefix of this string
+* @param curString: the second string, overlap contains a suffix of this string
+*/
 function getOverlaps(seq, curString) {
 	let maximum = 0;
 	let seqPos = 0;
@@ -149,5 +193,5 @@ sequenceForm.addEventListener("submit", function(event) {
 	if (sequence.length > 0) {
 		drawAutomaton(sequence,canvas.height,canvas.width);
 	}
-})
+});
         
