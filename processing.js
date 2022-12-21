@@ -30,6 +30,9 @@ function drawAutomaton(seq,height,width) {
 	let x = ((width-totalSpace)/2)+radius;
 	// initial height (y-axis radius of the ellipse) to draw backwards transitions 
 	let yRadius = 40;
+	// sizes of fonts inside automaton relative to the size of the radius
+	let stateFontSize = radius/1.25;
+	let transFontSize = radius/3;
 	
 	// for each state
 	for (let i=0; i<k; i++) {			
@@ -39,8 +42,8 @@ function drawAutomaton(seq,height,width) {
 		context.stroke();
 		context.closePath();
 		// draw state inside circle
-		context.font = "5vh Times New Roman";
-		context.fillText(i, x-3, y+5);
+		context.font = stateFontSize + "px Times New Roman";
+		context.fillText(i, x-(stateFontSize/6), y+(stateFontSize/4));
 		
 		// add backwards transitions, iterate through all letters of alphabet
 		let forwardChar = seq[i];
@@ -54,15 +57,14 @@ function drawAutomaton(seq,height,width) {
 				let backwardsState = getOverlaps(seq, curString);
 				// even numbered state, add backwards transition above the states
 				if (i % 2 == 0) {
-					// loop using a Bezier curve
+					// loop using a full ellipse
 					if (i-backwardsState == 0) {
 						context.beginPath();
-						context.moveTo(x, y-radius);
-						context.bezierCurveTo(x-30,y-radius*2,x+30,y-radius*2,x, y-radius);
+						context.ellipse(x,y-(radius*1.5),8,radius/2,0,0,2*Math.PI,true);
 						context.stroke();
 						// character on backwards transition
-						context.font = "2vh Times New Roman";
-						context.fillText(alphabet[j],x,y-(radius*2)+16);
+						context.font = transFontSize + "px Times New Roman";
+						context.fillText(alphabet[j],x-2,y-(radius*2)-3);
 					}
 					// backwards transition to another state using a half-ellipse
 					else {
@@ -70,22 +72,21 @@ function drawAutomaton(seq,height,width) {
 						context.ellipse(getMiddleXCoord(x,i,backwardsState,radius),y-radius, getTotalDistance(i,backwardsState,radius)/2,yRadius,0,0,Math.PI,true);
 						context.stroke();
 						// character on backwards transition
-						context.font = "2vh Times New Roman";
+						context.font = transFontSize + "px Times New Roman";
 						context.fillText(alphabet[j],getMiddleXCoord(x,i,backwardsState,radius),y-radius-yRadius-3);
 					}
 				}
 				
 				// odd numbered state, add backwards transition below the states
 				else {
-					// loop using a Bezier curve
+					// loop using a full ellipse
 					if (i-backwardsState == 0) {
 						context.beginPath();
-						context.moveTo(x, y+radius);
-						context.bezierCurveTo(x-30,y+radius*2,x+30,y+radius*2,x, y+radius);
+						context.ellipse(x,y+(radius*1.5),8,radius/2,0,0,2*Math.PI,false);
 						context.stroke();
 						// character on backwards transition
-						context.font = "2vh Times New Roman";
-						context.fillText(alphabet[j],x,y+(radius*2)-10);
+						context.font = transFontSize + "px Times New Roman";
+						context.fillText(alphabet[j],x-2,y+(radius*2)+12);
 					}
 					// backwards transition to another state using a half-ellipse
 					else {
@@ -93,7 +94,7 @@ function drawAutomaton(seq,height,width) {
 						context.ellipse(getMiddleXCoord(x,i,backwardsState,radius),y+radius, getTotalDistance(i,backwardsState,radius)/2,yRadius,0,0,Math.PI,false);
 						context.stroke();
 						// character on backwards transition
-						context.font = "2vh Times New Roman";
+						context.font = transFontSize + "px Times New Roman";
 						context.fillText(alphabet[j],getMiddleXCoord(x,i,backwardsState,radius),y+radius+yRadius+10);
 					}
 				}
@@ -111,7 +112,7 @@ function drawAutomaton(seq,height,width) {
 			context.stroke();
 			context.closePath();
 			// character for forward transition 
-			context.font = "2vh Times New Roman";
+			context.font = transFontSize + "px Times New Roman";
 			context.fillText(seq.charAt(i),x+radius+(radius/2),y-3);
 			// increase x for next circle to be drawn
 			x += (radius*3);
