@@ -4,12 +4,20 @@ body {
 	font-family: "Times New Roman", serif;
 }
 
-#title {
+p {
+	margin: 0;
+}
+
+#titlePanel {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	height: 12vh;
-	font-size: 3vh;
+	height: 10vh;
+}
+
+#title {
+	font-size: 6vh;
+	font-weight: bold;
 }
 
 #sequenceForm {
@@ -21,23 +29,28 @@ body {
 #formPanel {
 	display: flex;
 	flex-direction: row;
-	justify-content: space-between;
+	justify-content: center;
 	align-items: center;
-	height: 8vh;
-	width: 23.5vw;
+	height: 6vh;
+	width: 40vw;
 	font-size: 2.5vh;
 }
 
 #formPanel input {
-	height: 2.5vh;
+	height: 3.5vh;
 	width: 13vw;
+	box-sizing: border-box;
+	margin-left: 0.5%;
+	font-size: 2.25vh;
 }
 
 #formPanel button {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 	width: 4.5vw;
 	height: 3.5vh;
-	font-size: 2.25vh;
-	text-align: center;
+	font-size: 2vh;
 }
 
 #automatonPanel {
@@ -47,5 +60,10 @@ body {
 	justify-content: center;
 	align-items: center;
 	position: relative;
+}
+
+canvas {
+	width: 100%;
+	object-fit: contain;
 }
 
