@@ -7,3 +7,12 @@ For each state i, i $\neq$ *F*, there is a forward transition on the i-th charac
 
 ## Purpose
 This project simply builds a visual representation of the string matching automaton given the pattern.  
+
+## Examples
+Note that a larger $\Sigma$ creates a more complex automaton due to a greater number of transitions. Therefore, only examples with $\Sigma$=2 are shown.
+
+***Example 1***
+![automaton2](https://user-images.githubusercontent.com/118228251/219541046-9742ab4d-9aec-42ef-9382-89123237d2a2.png)
+
+***Example 2***
+![automaton1](https://user-images.githubusercontent.com/118228251/219541009-095e98b8-a54d-4a03-8c6b-8db8649e43f8.png)
