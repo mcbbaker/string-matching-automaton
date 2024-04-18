@@ -1,4 +1,5 @@
 # string-matching-automaton
+**_(A Personal Project)_**
 ## Background
 Given a pattern P, text T, and alphabet $\Sigma$, a string matching automaton is used to find every occurrence of the pattern within the text. The string matching automaton consists of |P|+1 states. The last state is known as the "final state", *F*. Once the automaton is built, the text can be run through with a simple algorithm (omitted). Each time the final state is reached, the pattern has just been read and the starting position of the pattern within the text can be determined. 
 
